@@ -3,7 +3,7 @@ import axios from 'axios';
 // O "api" agora aponta para a URL base CORRETA,
 // incluindo o /api
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api' 
+  baseURL: 'http://localhost:3001/api'
 });
 
 // O interceptor de token continua igual

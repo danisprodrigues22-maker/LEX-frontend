@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../../api/axiosConfig';
-import './ProcessoPage.css';
-import './ProcessoTabs.css'; // 1. Importando o CSS com o nome novo
-
-// 2. Importando o componente de abas com o nome novo
-import ProcessoTabs from './ProcessoTabs'; 
+import './ProcessPage.css';
+import './ProcessTabs.css';
+import ProcessoTabs from './ProcessTabs';
 
 function ProcessoDetalhePage() {
   const [processo, setProcesso] = useState(null);

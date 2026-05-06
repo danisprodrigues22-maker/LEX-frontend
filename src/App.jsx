@@ -1,19 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import DashboardPage from './pages/DashboardPage';
-import ProtectedRoute from './utils/ProtectedRoute';
+import LoginPage from './pages/auth/LoginPage';
+import RegisterPage from './pages/auth/RegisterPage';
+import DashboardPage from './pages/dashboard/DashboardPage';
+import ProtectedRoute from './components/common/ProtectedRoute';
 import './App.css';
 
-// Importações de Páginas
-import DashboardHomePage from './pages/DashboardHomePage';
-import ClienteListPage from './pages/clientes/ClienteListPage';
-import ClienteFormPage from './pages/clientes/ClienteFormPage';
-import ProcessoListPage from './pages/processos/ProcessoListPage';
-import ProcessoFormPage from './pages/processos/ProcessoFormPage';
-
-// 1. IMPORTE A NOVA PÁGINA DE DETALHES
-import ProcessoDetalhePage from './pages/processos/ProcessoDetalhePage';
+import DashboardHomePage from './pages/dashboard/DashboardHomePage';
+import ClienteListPage from './pages/clients/ClientListPage';
+import ClienteFormPage from './pages/clients/ClientFormPage';
+import ProcessoListPage from './pages/processes/ProcessListPage';
+import ProcessoFormPage from './pages/processes/ProcessFormPage';
+import ProcessoDetalhePage from './pages/processes/ProcessDetailPage';
 
 function App() {
   return (

@@ -14,6 +14,10 @@ import FeeListPage from './pages/fees/FeeListPage';
 import FeeFormPage from './pages/fees/FeeFormPage';
 import InstallmentListPage from './pages/installments/InstallmentListPage';
 import InstallmentFormPage from './pages/installments/InstallmentFormPage';
+import DocumentListPage from './pages/documents/DocumentListPage';
+import DocumentFormPage from './pages/documents/DocumentFormPage';
+import PaymentListPage from './pages/payments/PaymentListPage';
+import PaymentFormPage from './pages/payments/PaymentFormPage';
 
 function App() {
   return (
@@ -42,6 +46,14 @@ function App() {
           <Route path="parcelas" element={<InstallmentListPage />} />
           <Route path="parcelas/novo" element={<InstallmentFormPage />} />
           <Route path="parcelas/editar/:id" element={<InstallmentFormPage />} />
+
+          <Route path="documentos" element={<DocumentListPage />} />
+          <Route path="documentos/novo" element={<DocumentFormPage />} />
+          <Route path="documentos/editar/:id" element={<DocumentFormPage />} />
+
+          <Route path="pagamentos" element={<PaymentListPage />} />
+          <Route path="pagamentos/novo" element={<PaymentFormPage />} />
+          <Route path="pagamentos/editar/:id" element={<PaymentFormPage />} />
         </Route>
       </Route>
     </Routes>

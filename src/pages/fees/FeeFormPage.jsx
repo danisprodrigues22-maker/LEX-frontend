@@ -115,25 +115,21 @@ function FeeFormPage() {
 
           <div className="form-group span-1">
             <label>Tipo *</label>
-            <input
-              type="text"
-              name="tipo"
-              placeholder="Ex: fixo, percentual"
-              value={formData.tipo}
-              onChange={handleChange}
-              required
-            />
+            <select name="tipo" value={formData.tipo} onChange={handleChange} required>
+              <option value="">Selecione</option>
+              <option value="fixo">Fixo</option>
+              <option value="percentual">Percentual</option>
+              <option value="custas">Custas</option>
+            </select>
           </div>
 
           <div className="form-group span-1">
             <label>Status</label>
-            <input
-              type="text"
-              name="status"
-              placeholder="Ex: pendente, pago"
-              value={formData.status}
-              onChange={handleChange}
-            />
+            <select name="status" value={formData.status} onChange={handleChange}>
+              <option value="pendente">Pendente</option>
+              <option value="pago">Pago</option>
+              <option value="cancelado">Cancelado</option>
+            </select>
           </div>
 
           <div className="form-group span-1">

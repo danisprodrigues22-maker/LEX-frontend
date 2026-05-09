@@ -6,6 +6,7 @@ import ProtectedRoute from '../components/common/ProtectedRoute';
 import DashboardHomePage from '../pages/dashboard/DashboardHomePage';
 import ClienteListPage from '../pages/clients/ClientListPage';
 import ClienteFormPage from '../pages/clients/ClientFormPage';
+import ClientDetailPage from '../pages/clients/ClientDetailPage';
 import ProcessoListPage from '../pages/processes/ProcessListPage';
 import ProcessoFormPage from '../pages/processes/ProcessFormPage';
 import ProcessoDetalhePage from '../pages/processes/ProcessDetailPage';
@@ -32,6 +33,7 @@ function AppRoutes() {
           <Route path="clientes" element={<ClienteListPage />} />
           <Route path="clientes/novo" element={<ClienteFormPage />} />
           <Route path="clientes/editar/:id" element={<ClienteFormPage />} />
+          <Route path="clientes/detalhe/:id" element={<ClientDetailPage />} />
 
           <Route path="processos" element={<ProcessoListPage />} />
           <Route path="processos/novo" element={<ProcessoFormPage />} />

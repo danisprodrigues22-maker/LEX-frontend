@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/axiosConfig';
+import clientService from '../../api/clientService';
 import './ClientPage.css';
 
 function ClienteListPage() {
@@ -12,12 +12,12 @@ function ClienteListPage() {
     const fetchClientes = async () => {
       try {
         setLoading(true);
-        const response = await api.get('/clientes'); 
-        setClientes(response.data);
-        setLoading(false);
+        const response = await clientService.getAllClients();
+        setClientes(response.data.data ?? response.data);
       } catch (err) {
         setError('Falha ao buscar clientes.');
         console.error(err);
+      } finally {
         setLoading(false);
       }
     };
@@ -25,24 +25,37 @@ function ClienteListPage() {
   }, []);
 
   const handleDelete = async (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este cliente? Isso não será possível se ele tiver processos vinculados.')) {
+    if (window.confirm('Tem certeza que deseja excluir este cliente?')) {
       try {
-        await api.delete(`/clientes/${id}`);
-        setClientes(clientes.filter(cliente => cliente.pessoa_id !== id));
+        await clientService.deleteClient(id);
+        setClientes(clientes.filter(c => c._id !== id));
       } catch (err) {
-        setError(err.response?.data?.error || 'Erro ao excluir cliente.');
+        setError(err.response?.data?.message || 'Erro ao excluir cliente.');
       }
     }
+  };
+
+  const formatEndereco = (endereco) => {
+    if (!endereco?.logradouro) return '—';
+    const partes = [
+      endereco.logradouro,
+      endereco.numero ? `nº ${endereco.numero}` : null,
+      endereco.bairro,
+      [endereco.cidade, endereco.estado].filter(Boolean).join('/'),
+    ].filter(Boolean);
+    return partes.join(', ');
   };
 
   if (loading) return <p>Carregando...</p>;
 
   return (
     <div className="cliente-page-container">
-      <h1 className="page-title">Clientes Registrados</h1>
+      <div className="page-header">
+        <h1 className="page-title">Clientes Registrados</h1>
+        <Link to="/dashboard/clientes/novo" className="btn-primary">Novo Cliente</Link>
+      </div>
       {error && <p className="error-message">{error}</p>}
-      
-      {/* Tabela com scroll horizontal */}
+
       <div className="table-wrapper">
         <table className="data-table">
           <thead>
@@ -53,36 +66,27 @@ function ClienteListPage() {
               <th>Email</th>
               <th>Telefone</th>
               <th>Endereço</th>
-              <th>Nacionalidade</th>
-              <th>Profissão</th>
-              <th>Est. Civil</th>
               <th>Ações</th>
             </tr>
           </thead>
           <tbody>
             {clientes.length === 0 ? (
               <tr>
-                <td colSpan="10">Nenhum cliente cadastrado.</td>
+                <td colSpan="7">Nenhum cliente cadastrado.</td>
               </tr>
             ) : (
               clientes.map(cliente => (
-                <tr key={cliente.pessoa_id}>
-                  {/* Usa os nomes de dados corrigidos */}
-                  <td>{cliente.nome}</td>
-                  <td>{cliente.cpf_cnpj}</td>
-                  <td>{cliente.tipo_pessoa}</td>
-                  <td>{cliente.email}</td>
-                  <td>{cliente.telefone}</td>
-                  {/* Combina o endereço em um campo */}
-                  <td>
-                    {cliente.rua || ''} {cliente.num || ''}, {cliente.bairro || ''} - {cliente.cidade || ''} ({cliente.estado || ''})
-                  </td>
-                  <td>{cliente.nacionalidade}</td>
-                  <td>{cliente.profissao}</td>
-                  <td>{cliente.estado_civil}</td>
+                <tr key={cliente._id}>
+                  <td>{cliente.tipoPessoa === 'fisica' ? cliente.nomeCompleto : cliente.razaoSocial}</td>
+                  <td>{cliente.tipoPessoa === 'fisica' ? cliente.cpf : cliente.cnpj}</td>
+                  <td>{cliente.tipoPessoa === 'fisica' ? 'Física' : 'Jurídica'}</td>
+                  <td>{cliente.email || '—'}</td>
+                  <td>{cliente.telefone || '—'}</td>
+                  <td>{formatEndereco(cliente.endereco)}</td>
                   <td className="actions-cell">
-                    <Link to={`/dashboard/clientes/editar/${cliente.pessoa_id}`} className="btn-action btn-edit">Editar</Link>
-                    <button onClick={() => handleDelete(cliente.pessoa_id)} className="btn-action btn-delete">Excluir</button>
+                    <Link to={`/dashboard/clientes/detalhe/${cliente._id}`} className="btn-action btn-view">Ver</Link>
+                    <Link to={`/dashboard/clientes/editar/${cliente._id}`} className="btn-action btn-edit">Editar</Link>
+                    <button onClick={() => handleDelete(cliente._id)} className="btn-action btn-delete">Excluir</button>
                   </td>
                 </tr>
               ))

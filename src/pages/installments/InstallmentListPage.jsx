@@ -16,7 +16,7 @@ function InstallmentListPage() {
 
   useEffect(() => {
     installmentService.listInstallments()
-      .then(res => setInstallments(res.data))
+      .then(res => setInstallments(res.data.data ?? res.data))
       .catch(() => setError('Falha ao buscar parcelas.'))
       .finally(() => setLoading(false));
   }, []);

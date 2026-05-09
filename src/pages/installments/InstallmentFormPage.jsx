@@ -25,7 +25,7 @@ function InstallmentFormPage() {
 
   useEffect(() => {
     feeService.listFees()
-      .then(res => setFees(res.data))
+      .then(res => setFees(res.data.data ?? res.data))
       .catch(() => setError('Falha ao carregar honorários.'));
 
     if (isEditing) {
@@ -56,10 +56,12 @@ function InstallmentFormPage() {
     setError('');
     try {
       const payload = {
-        ...formData,
+        feeId: formData.feeId,
         numeroParcela: Number(formData.numeroParcela),
         valor: Number(formData.valor),
-        dataPagamento: formData.dataPagamento || undefined,
+        dataVencimento: formData.dataVencimento || undefined,
+        status: formData.status,
+        dataPagamento: formData.status === 'pago' ? (formData.dataPagamento || undefined) : undefined,
       };
       if (isEditing) {
         await installmentService.updateInstallment(id, payload);

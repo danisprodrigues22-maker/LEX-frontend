@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../api/axiosConfig';
+import processService from '../../api/processService';
 import './ProcessPage.css';
 
 function ProcessoListPage() {
@@ -12,12 +12,12 @@ function ProcessoListPage() {
     const fetchProcessos = async () => {
       try {
         setLoading(true);
-        const response = await api.get('/processos'); 
-        setProcessos(response.data);
-        setLoading(false);
+        const response = await processService.listProcesses();
+        setProcessos(response.data.data ?? response.data);
       } catch (err) {
         setError('Falha ao buscar processos.');
         console.error(err);
+      } finally {
         setLoading(false);
       }
     };
@@ -27,64 +27,73 @@ function ProcessoListPage() {
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este processo?')) {
       try {
-        await api.delete(`/processos/${id}`);
-        setProcessos(processos.filter(p => p.processo_id !== id));
+        await processService.deleteProcess(id);
+        setProcessos(processos.filter(p => p._id !== id));
       } catch (err) {
-        setError('Erro ao excluir processo. Verifique se ele possui parcelas ou documentos.');
+        setError(err.response?.data?.message || 'Erro ao excluir processo.');
       }
     }
   };
 
   const formatarData = (dataISO) => {
-    if (!dataISO) return 'N/A';
+    if (!dataISO) return '—';
     try {
       return new Date(dataISO).toLocaleDateString('pt-BR', { timeZone: 'UTC' });
-    } catch (e) { return 'Data Inválida'; }
+    } catch (e) { return 'Data inválida'; }
+  };
+
+  const nomeCliente = (p) => {
+    if (!p.clienteId) return '—';
+    if (typeof p.clienteId === 'object') {
+      return p.clienteId.tipoPessoa === 'fisica'
+        ? p.clienteId.nomeCompleto
+        : p.clienteId.razaoSocial;
+    }
+    return String(p.clienteId);
   };
 
   if (loading) return <p>Carregando...</p>;
 
   return (
     <div className="page-container">
-      <h1 className="page-title">Processos Registrados</h1>
+      <div className="page-header">
+        <h1 className="page-title">Processos Registrados</h1>
+        <Link to="/dashboard/processos/novo" className="btn-primary">Novo Processo</Link>
+      </div>
       {error && <p className="error-message">{error}</p>}
-      <table className="data-table">
-        <thead>
-          <tr>
-            <th>Título do Caso</th>
-            <th>Nº do Processo</th>
-            <th>Cliente</th>
-            <th>Status</th>
-            <th>Data Abertura</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {processos.length === 0 ? (
+      <div className="table-wrapper">
+        <table className="data-table">
+          <thead>
             <tr>
-              <td colSpan="6">Nenhum processo cadastrado.</td>
+              <th>Título</th>
+              <th>Nº Processo</th>
+              <th>Cliente</th>
+              <th>Status</th>
+              <th>Distribuição</th>
+              <th>Ações</th>
             </tr>
-          ) : (
-            processos.map(p => (
-              <tr key={p.processo_id}>
-                <td>{p.titulo_caso}</td>
-                <td>{p.numero_processo}</td>
-                <td>{p.nome_cliente}</td>
-                <td>{p.status_processo}</td>
-                <td>{formatarData(p.data_emissao)}</td>
-                <td className="actions-cell">
-                  {/* ***** MUDANÇA AQUI ***** */}
-                  {/* Este link agora leva para a página de Detalhes/Financeiro */}
-                  <Link to={`/dashboard/processos/detalhe/${p.processo_id}`} className="btn-action btn-edit">
-                    Gerenciar
-                  </Link>
-                  <button onClick={() => handleDelete(p.processo_id)} className="btn-action btn-delete">Excluir</button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {processos.length === 0 ? (
+              <tr><td colSpan="6">Nenhum processo cadastrado.</td></tr>
+            ) : (
+              processos.map(p => (
+                <tr key={p._id}>
+                  <td>{p.titulo}</td>
+                  <td>{p.numeroProcesso || '—'}</td>
+                  <td>{nomeCliente(p)}</td>
+                  <td>{p.status}</td>
+                  <td>{formatarData(p.dataDistribuicao)}</td>
+                  <td className="actions-cell">
+                    <Link to={`/dashboard/processos/detalhe/${p._id}`} className="btn-action btn-edit">Gerenciar</Link>
+                    <button onClick={() => handleDelete(p._id)} className="btn-action btn-delete">Excluir</button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

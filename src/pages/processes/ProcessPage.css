@@ -67,3 +67,16 @@
 .btn-primary { background-color: var(--bg-button); color: var(--text-button); }
 .btn-cancel { background-color: transparent; border: 1px solid var(--text-color); color: var(--text-color); }
 .error-message { color: #ff6b6b; }
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.page-header .page-title { margin-bottom: 0; }
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}

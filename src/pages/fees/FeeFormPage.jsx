@@ -55,7 +55,14 @@ function FeeFormPage() {
     setLoading(true);
     setError('');
     try {
-      const payload = { ...formData, valor: Number(formData.valor) };
+      const payload = {
+        processoId: formData.processoId,
+        descricao: formData.descricao,
+        valor: Number(formData.valor),
+        tipo: formData.tipo,
+        status: formData.status,
+        dataVencimento: formData.dataVencimento,
+      };
       if (isEditing) {
         await feeService.updateFee(id, payload);
       } else {

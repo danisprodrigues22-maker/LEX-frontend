@@ -7,10 +7,10 @@ function ProcessoTabs({ processoId }) {
     <div className="tabs-container">
       <h3 className="modulos-nav-title">Módulos Relacionados</h3>
       <div className="modulos-nav">
-        <Link to="/dashboard/honorarios" className="btn-primary">Honorários</Link>
-        <Link to="/dashboard/parcelas" className="btn-primary">Parcelas</Link>
-        <Link to="/dashboard/documentos" className="btn-primary">Documentos</Link>
-        <Link to="/dashboard/pagamentos" className="btn-primary">Pagamentos</Link>
+        <Link to={`/dashboard/honorarios?processoId=${processoId}`} className="btn-primary">Honorários</Link>
+        <Link to={`/dashboard/parcelas?processoId=${processoId}`} className="btn-primary">Parcelas</Link>
+        <Link to={`/dashboard/documentos?processoId=${processoId}`} className="btn-primary">Documentos</Link>
+        <Link to={`/dashboard/pagamentos?processoId=${processoId}`} className="btn-primary">Pagamentos</Link>
       </div>
     </div>
   );

@@ -37,3 +37,11 @@
   justify-content: flex-end;
   gap: var(--space-3);
 }
+
+@media (max-width: 767px) {
+  .modal {
+    margin: var(--space-4);
+    max-height: calc(100vh - var(--space-8));
+    overflow-y: auto;
+  }
+}

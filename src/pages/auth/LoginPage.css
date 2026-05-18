@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 400px; /* Limita a largura em telas grandes */
+  max-width: 400px;
   padding: 20px;
 }
 
@@ -11,7 +11,6 @@
   width: 150px;
   height: auto;
   margin-bottom: 30px;
-  /* Aplica o filtro de cor que definimos no index.css */
   filter: var(--logo-filter);
 }
 
@@ -19,28 +18,28 @@
   width: 100%;
 }
 
-.form-group {
+.login-page .form-group {
   margin-bottom: 15px;
   width: 100%;
 }
 
-.form-group input {
+.login-page .form-group input {
   width: 100%;
   padding: 12px 10px;
   border-radius: 8px;
-  border: 1px solid var(--text-color); /* Bordas douradas/escuras */
+  border: 1px solid var(--text-color);
   background: var(--bg-input);
-  color: var(--text-color); /* Texto dourado/escuro */
+  color: var(--text-color);
   font-size: 16px;
-  box-sizing: border-box; /* Garante que o padding não quebre o layout */
+  box-sizing: border-box;
 }
 
-.form-group input::placeholder {
+.login-page .form-group input::placeholder {
   color: var(--text-color);
   opacity: 0.7;
 }
 
-.btn-primary {
+.login-page .btn-primary {
   width: 100%;
   padding: 12px;
   border: none;
@@ -53,12 +52,12 @@
   transition: opacity 0.2s;
 }
 
-.btn-primary:hover {
+.login-page .btn-primary:hover {
   opacity: 0.9;
 }
 
-.error-message {
-  color: #ff6b6b; /* Um vermelho para erros */
+.login-page .error-message {
+  color: #ff6b6b;
   text-align: center;
   margin-bottom: 15px;
 }

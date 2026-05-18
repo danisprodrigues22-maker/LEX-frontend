@@ -10,27 +10,6 @@
   margin-top: 0;
 }
 
-/* NOVO: Wrapper para a tabela ter scroll horizontal */
-.table-wrapper {
-  width: 100%;
-  overflow-x: auto; /* Adiciona scroll horizontal */
-}
-
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
-  color: var(--text-color);
-  min-width: 1200px; /* Força a tabela a ser larga */
-}
-.data-table th, .data-table td {
-  border: 1px solid var(--text-color);
-  padding: 12px;
-  text-align: left;
-  white-space: nowrap; /* Impede que o texto quebre linha */
-}
-.data-table th { background-color: rgba(184, 157, 75, 0.1); }
-.data-table tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
 .actions-cell { display: flex; gap: 10px; }
 .btn-action { padding: 5px 10px; border-radius: 4px; text-decoration: none; font-size: 14px; cursor: pointer; border: none; }
 .btn-edit { background-color: var(--bg-button); color: var(--text-button); }
@@ -124,3 +103,17 @@
 .detail-section p { margin: 8px 0; }
 
 .tipo-pessoa-label { color: var(--text-color); margin-bottom: 10px; }
+
+@media (max-width: 1023px) {
+  .form-grid.section { grid-template-columns: repeat(2, 1fr); }
+  .form-grid.section h3 { grid-column: span 2; }
+  .form-group.span-3 { grid-column: span 2; }
+}
+
+@media (max-width: 767px) {
+  .form-grid.section { grid-template-columns: 1fr; }
+  .form-grid.section h3 { grid-column: 1; }
+  .form-group.span-1,
+  .form-group.span-2,
+  .form-group.span-3 { grid-column: 1; }
+}

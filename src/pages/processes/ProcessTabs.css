@@ -133,3 +133,11 @@
   padding-bottom: 10px;
 }
 .processo-detalhe-secao p { margin: 8px 0; }
+
+@media (max-width: 767px) {
+  .detalhe-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+}

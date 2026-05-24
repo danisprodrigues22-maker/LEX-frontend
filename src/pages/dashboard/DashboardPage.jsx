@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AppLayout from '../../components/layout/AppLayout';
-import { removeToken, getTheme as getStoredTheme, setTheme as setStoredTheme, removeTheme } from '../../utils/storage';
+import { getTheme as getStoredTheme, setTheme as setStoredTheme, removeTheme } from '../../utils/storage';
+import api from '../../api/axiosConfig';
 
 function DashboardPage() {
   const navigate = useNavigate();
@@ -20,11 +21,16 @@ function DashboardPage() {
     setTheme(prev => (prev === 'dark' ? 'light' : 'dark'));
   };
 
-  const handleLogout = () => {
-    removeToken();
-    document.body.classList.remove('light-mode');
-    removeTheme();
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await api.post('/auth/logout');
+    } catch (err) {
+      console.warn('Logout API call failed, proceeding with local cleanup:', err);
+    } finally {
+      document.body.classList.remove('light-mode');
+      removeTheme();
+      navigate('/login');
+    }
   };
 
   return (

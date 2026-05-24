@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/axiosConfig';
-import { setToken } from '../../utils/storage';
 import './LoginPage.css';
 import logo from '../../assets/logo-lex.jpeg';
 
@@ -20,13 +19,10 @@ function LoginPage() {
 
     try {
       // 2. MUDANÇA: Usa 'api.post' e só o final da URL
-      const response = await api.post('/auth/login', {
+      await api.post('/auth/login', {
         email: email,
         senha: senha,
       });
-
-      const token = response.data.token;
-      setToken(token);
 
       navigate('/dashboard');
 

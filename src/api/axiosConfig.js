@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { removeToken } from '../utils/storage';
 import { toast } from '../utils/toast';
 
 const api = axios.create({
@@ -14,7 +13,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401 && !isRedirecting) {
       isRedirecting = true;
-      removeToken();
       toast.error('Sessão expirada. Faça login novamente.');
       window.location.href = '/login';
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import installmentService from '../../api/installmentService';
 import PageHeader from '../../components/ui/PageHeader';
 import EmptyState from '../../components/ui/EmptyState';
@@ -15,13 +15,15 @@ function InstallmentListPage({ embedded = false }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
+  const [searchParams] = useSearchParams();
+  const processoId = searchParams.get('processoId') || undefined;
 
   useEffect(() => {
-    installmentService.listInstallments()
+    installmentService.listInstallments({ processoId })
       .then(res => setInstallments(res.data.data ?? res.data))
       .catch(() => setError('Falha ao buscar parcelas.'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [processoId]);
 
   const confirmDelete = (id) => setDeleteModal({ open: true, id });
 

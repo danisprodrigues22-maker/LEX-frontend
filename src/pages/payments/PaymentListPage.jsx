@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import paymentService from '../../api/paymentService';
 import PageHeader from '../../components/ui/PageHeader';
 import EmptyState from '../../components/ui/EmptyState';
@@ -23,13 +23,15 @@ function PaymentListPage({ embedded = false }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
+  const [searchParams] = useSearchParams();
+  const processoId = searchParams.get('processoId') || undefined;
 
   useEffect(() => {
-    paymentService.listPayments({ page: 1, limit: 20 })
+    paymentService.listPayments({ page: 1, limit: 20, processoId })
       .then(res => setPayments(res.data.data ?? res.data))
       .catch(() => setError('Falha ao buscar pagamentos.'))
       .finally(() => setLoading(false));
-  }, []);
+  }, [processoId]);
 
   const confirmDelete = (id) => setDeleteModal({ open: true, id });
 
